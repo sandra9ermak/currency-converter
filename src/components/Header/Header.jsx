@@ -9,13 +9,14 @@ import { useEffect } from "react";
 const Header = () => {
   const [currency, setCurrency] = useState("");
 
-  // useEffect(() => {
-  //   getCurrentCurrency().then((results) => {
-  //     setCurrency(results);
-  //   });
-  // });
-
-  console.log(currency);
+  useEffect(() => {
+    getCurrentCurrency().then((results) => {
+      const newArray = results.filter(
+        (el) => el.ccy === "USD" || el.ccy === "EUR"
+      );
+      setCurrency(newArray);
+    });
+  }, []);
 
   return (
     <header className={s.header}>
@@ -31,19 +32,25 @@ const Header = () => {
             </li>
           </ul>
           <div>
-            <p className={s.amountText}>Amount</p>
+            <p className={s.amountText}>Buy</p>
             <ul className={s.amountList}>
-              {/* {currency.length !== 0 &&
+              {currency.length !== 0 &&
                 currency.map((item) => (
-                  <li className={s.amountListItem}>{item.rate}</li>
-                ))} */}
+                  <li className={s.amountListItem}>
+                    {Math.floor(item.buy * 100) / 100}
+                  </li>
+                ))}
             </ul>
           </div>
           <div>
-            <p className={s.changeText}>Change</p>
+            <p className={s.changeText}>Sale</p>
             <ul className={s.changeList}>
-              <li className={s.changeListItem}>32.5</li>
-              <li className={s.changeListItem}>45.9</li>
+              {currency.length !== 0 &&
+                currency.map((item) => (
+                  <li className={s.amountListItem}>
+                    {Math.floor(item.sale * 100) / 100}
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
